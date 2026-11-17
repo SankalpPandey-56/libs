@@ -44,14 +44,16 @@ class Kestra:
     Example - Send an output:
         Kestra.outputs({"my_output": "my_value"})
 
-    Example - Send an asset:
+    Example - Send the assets a script reads and writes:
         Kestra.assets({
-            "id": "my_asset",
-            "type": "TABLE",
-            "name": "MY_TABLE",
-            "metadata": {
-                "owner": "team-a"
-            }
+            "inputs": [{"id": "raw.orders"}],
+            "outputs": [{
+                "id": "analytics.orders_daily",
+                "type": "io.kestra.plugin.ee.assets.Table",
+                "metadata": {
+                    "owner": "team-a"
+                }
+            }]
         })
 
     Example - Log an error:
@@ -132,11 +134,11 @@ class Kestra:
     @staticmethod
     def assets(map_: dict):
         """
-        The `Kestra` class provides a method to send a full asset to
-        the Kestra server.
+        The `Kestra` class provides a method to send the assets a script reads
+        and writes to the Kestra server.
 
         Args:
-            map_ (dict): The full asset properties to send to the Kestra server.
+            map_ (dict): The assets to send, as lists of `inputs` and `outputs`.
         """
         Kestra._send({"assets": map_})
 
